@@ -1,0 +1,58 @@
+#[test]
+fn issue_52() {
+    use assert_matches::assert_matches;
+    use oas3::spec;
+
+    let spec = oas3::from_yaml(include_str!("../issues/issue-52.yaml")).unwrap();
+
+    let op = spec.operation_by_id("any").unwrap();
+
+    let schema = op.responses(&spec)["200"].content["application/json"]
+        .schema
+        .clone()
+        .unwrap();
+
+    let schema = schema
+        .resolve(&spec)
+        .unwrap()
+        .additional_properties
+        .unwrap();
+
+    assert_matches!(schema, spec::Schema::Boolean(spec::BooleanSchema(true)));
+
+    let op = spec.operation_by_id("none").unwrap();
+
+    let schema = op.responses(&spec)["200"].content["application/json"]
+        .schema
+        .clone()
+        .unwrap();
+
+    let schema = schema
+        .resolve(&spec)
+        .unwrap()
+        .additional_properties
+        .unwrap();
+
+    assert_matches!(schema, spec::Schema::Boolean(spec::BooleanSchema(false)));
+}
+
+#[test]
+fn issue_79() {
+    let spec = oas3::from_yaml(include_str!("../issues/issue-79.yaml")).unwrap();
+
+    let op = spec.operation_by_id("listClientIdsWithSize").unwrap();
+
+    let param = op.parameter("sortBy", &spec).unwrap().unwrap();
+    let schema = param.schema.unwrap().resolve(&spec).unwrap();
+
+    assert_eq!(schema.title.as_deref(), Some("foo"));
+}
+
+#[test]
+fn exclusive_minimum_boolean() {
+    // OpenAPI 3.0 / JSON Schema draft-04 uses exclusiveMinimum: true (boolean)
+    // OpenAPI 3.1 / JSON Schema 2020-12 uses exclusiveMinimum: <number>
+    // Many specs in the wild mix these, so we should handle both.
+    let _spec =
+        oas3::from_yaml(include_str!("../issues/issue-exclusive-min-bool.yaml")).unwrap();
+}

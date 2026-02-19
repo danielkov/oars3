@@ -1,0 +1,43 @@
+[package]
+name = "oas3"
+description = "Structures and tools to parse, navigate, and validate OpenAPI v3.1.xß specifications"
+version = "0.20.0"
+authors = ["softprops <d.tangren@gmail.com>", "Rob Ede <robjtede@icloud.com>"]
+keywords = ["openapi", "oas3", "swagger", "api", "oas"]
+categories = ["data-structures", "parsing"]
+repository = { workspace = true }
+license = { workspace = true }
+edition = { workspace = true }
+rust-version = { workspace = true }
+
+[package.metadata.docs.rs]
+all-features = true
+
+[features]
+default = []
+yaml-spec = ["dep:serde_yaml"]
+
+[dependencies]
+derive_more = { workspace = true, features = ["display", "error", "from"] }
+http = { workspace = true }
+log = { workspace = true }
+once_cell = { workspace = true }
+regex = { workspace = true }
+semver = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+serde_yaml = { workspace = true, optional = true }
+url = { workspace = true, features = ["serde"] }
+
+[dev-dependencies]
+assert_matches = { workspace = true }
+eyre = { workspace = true }
+indoc = { workspace = true }
+pretty_assertions = { workspace = true }
+
+[[example]]
+name = "printer"
+required-features = ["yaml-spec"]
+
+[lints]
+workspace = true

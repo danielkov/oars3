@@ -1,0 +1,43 @@
+[package]
+name = "roast"
+description = "Structures and tools to parse, navigate, and validate OpenAPI v3.1 specifications"
+version = "0.10.0"
+authors = ["Rob Ede <robjtede@icloud.com>"]
+keywords = ["oas3", "openapi", "swagger", "api", "conformance"]
+categories = ["development-tools::testing"]
+repository = { workspace = true }
+license = { workspace = true }
+edition = { workspace = true }
+rust-version = { workspace = true }
+
+[package.metadata.docs.rs]
+all-features = true
+
+[dependencies]
+bytes = { workspace = true }
+colored = { workspace = true }
+derive_more = { workspace = true, features = ["display", "error", "from"] }
+futures-util = { workspace = true }
+http = { workspace = true }
+log = { workspace = true }
+oas3 = { workspace = true, default-features = false }
+once_cell = { workspace = true }
+prettytable-rs = { workspace = true }
+reqwest = { workspace = true, features = ["json"] }
+serde_json = { workspace = true }
+url = { workspace = true, features = ["serde"] }
+
+[dev-dependencies]
+color-eyre = { workspace = true }
+dotenvy = { workspace = true }
+eyre = { workspace = true }
+maplit = { workspace = true }
+oas3 = { workspace = true, features = ["yaml-spec"] }
+pretty_env_logger = { workspace = true }
+tokio = { workspace = true, features = ["full"] }
+
+[[example]]
+name = "conformance"
+
+[lints]
+workspace = true
